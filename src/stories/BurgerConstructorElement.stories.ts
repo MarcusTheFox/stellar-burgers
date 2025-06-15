@@ -21,6 +21,7 @@ export const DefaultElement: Story = {
     ingredient: {
       _id: '111',
       id: '222',
+      uniqueId: '5918bbc0-7be3-4ce5-b9df-4c185e64bdd2',
       name: 'Булка',
       type: 'top',
       proteins: 12,

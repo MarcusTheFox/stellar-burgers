@@ -1,15 +1,33 @@
+import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
-import { FC } from 'react';
+import { fetchOrders } from '../../features/feed/feedSlice';
+import { fetchIngredients } from '../../features/ingredients/ingredientsSlice';
 
 export const Feed: FC = () => {
-  /** TODO: взять переменную из стора */
-  const orders: TOrder[] = [];
+  // Получаем список заказов из стора
+  const { orders } = useSelector((state) => state.rootReducer.orders.feed);
+  const dispatch = useDispatch();
 
+  // Загружаем заказы при монтировании
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
+
+  // Если заказы еще не загружены, показываем прелоадер
   if (!orders.length) {
     return <Preloader />;
   }
 
-  <FeedUI orders={orders} handleGetFeeds={() => {}} />;
+  // Основной рендер страницы
+  return (
+    <FeedUI
+      orders={orders}
+      handleGetFeeds={() => {
+        dispatch(fetchOrders());
+        dispatch(fetchIngredients());
+      }}
+    />
+  );
 };

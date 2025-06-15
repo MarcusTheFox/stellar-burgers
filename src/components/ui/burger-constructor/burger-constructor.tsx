@@ -6,9 +6,9 @@ import {
 } from '@zlden/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { BurgerConstructorUIProps } from './type';
-import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorElement, Modal } from '@components';
 import { Preloader, OrderDetailsUI } from '@ui';
+import { TConstructorIngredient } from '@utils-types';
 
 export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   constructorItems,
@@ -20,7 +20,10 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
 }) => (
   <section className={styles.burger_constructor}>
     {constructorItems.bun ? (
-      <div className={`${styles.element} mb-4 mr-4`}>
+      <div
+        data-test-id='constructor-item'
+        className={`${styles.element} mb-4 mr-4`}
+      >
         <ConstructorElement
           type='top'
           isLocked
@@ -31,12 +34,13 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       </div>
     ) : (
       <div
+        data-test-id='constructor-empty'
         className={`${styles.noBuns} ${styles.noBunsTop} ml-8 mb-4 mr-5 text text_type_main-default`}
       >
         Выберите булки
       </div>
     )}
-    <ul className={styles.elements}>
+    <ul data-test-id='constructor-item' className={styles.elements}>
       {constructorItems.ingredients.length > 0 ? (
         constructorItems.ingredients.map(
           (item: TConstructorIngredient, index: number) => (
@@ -44,7 +48,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
               ingredient={item}
               index={index}
               totalItems={constructorItems.ingredients.length}
-              key={item.id}
+              key={item.uniqueId}
             />
           )
         )
@@ -57,7 +61,10 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       )}
     </ul>
     {constructorItems.bun ? (
-      <div className={`${styles.element} mt-4 mr-4`}>
+      <div
+        data-test-id='constructor-item'
+        className={`${styles.element} mt-4 mr-4`}
+      >
         <ConstructorElement
           type='bottom'
           isLocked
@@ -75,10 +82,13 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
     )}
     <div className={`${styles.total} mt-10 mr-4`}>
       <div className={`${styles.cost} mr-10`}>
-        <p className={`text ${styles.text} mr-2`}>{price}</p>
+        <p data-test-id='total-price' className={`text ${styles.text} mr-2`}>
+          {price}
+        </p>
         <CurrencyIcon type='primary' />
       </div>
       <Button
+        data-test-id='place-order-button'
         htmlType='button'
         type='primary'
         size='large'
