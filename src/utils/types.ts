@@ -10,10 +10,12 @@ export type TIngredient = {
   image: string;
   image_large: string;
   image_mobile: string;
+  uniqueId?: string;
 };
 
 export type TConstructorIngredient = TIngredient & {
   id: string;
+  uniqueId?: string;
 };
 
 export type TOrder = {

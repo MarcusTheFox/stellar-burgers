@@ -1,0 +1,16 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  font-family: Iceland;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  text-align: center;
+  color: #F2F2F3;
+  margin-top: 120px;
+}

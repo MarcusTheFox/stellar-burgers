@@ -16,7 +16,8 @@ p {
 }
 
 .content {
-  overflow-y: scroll;
+  overflow-y: auto;
+  height: calc(100vh - 242px);
 }
 
 .menu {

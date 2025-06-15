@@ -1,19 +1,21 @@
-import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { updateUser } from '../../features/user/userSlice';
+import { ProfileUI } from '@ui-pages';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  // Получаем пользователя из стора
+  const user = useSelector((state) => state.rootReducer.user.user);
+  const dispatch = useDispatch();
 
+  // Состояние формы профиля
   const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
+    name: user?.name ?? '',
+    email: user?.email ?? '',
     password: ''
   });
 
+  // Синхронизация формы с изменениями пользователя
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
@@ -22,24 +24,36 @@ export const Profile: FC = () => {
     }));
   }, [user]);
 
+  // Проверка, изменена ли форма
   const isFormChanged =
     formValue.name !== user?.name ||
     formValue.email !== user?.email ||
     !!formValue.password;
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  // Обработчик отправки формы
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    const result = await dispatch(updateUser(formValue));
+    if (result.meta.requestStatus === 'fulfilled') {
+      setFormValue({
+        name: user?.name ?? '',
+        email: user?.email ?? '',
+        password: ''
+      });
+    }
   };
 
+  // Обработчик отмены изменений
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setFormValue({
-      name: user.name,
-      email: user.email,
+      name: user?.name ?? '',
+      email: user?.email ?? '',
       password: ''
     });
   };
 
+  // Обработчик изменения полей формы
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue((prevState) => ({
       ...prevState,
@@ -56,6 +70,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };
